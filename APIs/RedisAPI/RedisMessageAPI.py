@@ -12,7 +12,6 @@ class RedisMessageAPI(MessageAPI.MessageAPI):
 
     def sendMessage(self, fromUser, toUser, content):
         msg_uuid = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(5))
-
         key1 = "message:{}:from".format(msg_uuid)
         key2 = "message:{}:to".format(msg_uuid)
         key3 = "message:{}:message".format(msg_uuid)

@@ -15,6 +15,7 @@
 * balance
 * friends
 * acheievements
+* transcations
 
 
 ## A user's inventory
@@ -43,6 +44,11 @@ user:[userID]:friendList -> Set([userID])
 ## A user's messages
 ```
 user:[userID]:friend:[friendID]:messages -> List([messageID])
+```
+
+## A user's transcations
+```
+user:[userID]:transactions -> List([transactionID])
 ```
 ---------
 
@@ -110,6 +116,44 @@ item:[itemID]:desc -> string
 item:[itemID]:image -> string
 ```
 -----
+##Transaction
+--
+### A transaction has
+* id
+* from
+* to
+* item
+* timestamp
+* price
+
+## A transaction's from
+```
+message:[transactionID]:from -> [userID]
+```
+
+## A transaction's to
+```
+message:[transactionID]:to -> [userID]
+```
+
+
+## A transaction's item
+```
+message:[transactionID]:item -> [itemID]
+```
+
+## A transaction's date
+```
+message:[transactionID]:timestamp -> timestamp
+```
+
+## A transaction's message
+```
+message:[transactionID]:price -> int
+```
+
+-----
+
 
 ##Message
 --
