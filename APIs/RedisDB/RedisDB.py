@@ -28,8 +28,23 @@ class RedisDB():
     def lmembers(self, key):
         return [x for x in self.db.lrange(key, 0, -1)]
 
+    def ladd(self, key, values):
+        for value in values:
+            self.lpush(key, value)
+
     def reset(self):
         self.db.flushall()
 
     def exists(self, key):
         return self.db.exists(key)
+
+
+    def lrem(self, key, value):
+        self.db.lrem(key, 0, value)
+
+    def delete(self, key):
+        self.db.delete(key)
+
+    def srem(self, key, values):
+        for value in values:
+            self.db.srem(key, value)

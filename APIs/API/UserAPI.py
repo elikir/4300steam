@@ -39,3 +39,12 @@ class UserAPI(object):
 
     def getFriendList(self, userID):
         return NotImplementedError("Not implemented")
+
+    def makeBuyOrder(self, userID, itemID, price):
+        return NotImplementedError("Not implemented")
+
+    def makeSellOrder(self, userID, itemID, price):
+        return NotImplementedError("Not implemented")
+
+    def getTransactions(self, userID):
+        return NotImplementedError("Not implemented")

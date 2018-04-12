@@ -1,15 +1,15 @@
 
 
-class MessageAPI(object):
+class TradeAPI(object):
 
-    def sendMessage(self, fromUSer, toUser, content):
+    def createTrade(self, userFrom, userTo, offerItems, forItems):
         return NotImplementedError("Not implemented")
 
-    def getMessageContents(self, messageID):
+    def acceptTrade(self, tradeID):
         return NotImplementedError("Not implemented")
 
-    def getMessageTo(self, messageID):
+    def rejectTrade(self, tradeID):
         return NotImplementedError("Not implemented")
 
-    def getMessageFrom(self, messageID):
+    def getTradeInfo(self, tradeID):
         return NotImplementedError("Not implemented")
