@@ -11,15 +11,16 @@ from APIs.RedisAPI.RedisMessageAPI import RedisMessageAPI
 from APIs.RedisDB import RedisDB
 from APIs.RedisAPI.RedisOrderAPI import RedisOrderAPI
 from APIs.RedisAPI.RedisTradeAPI import RedisTradeAPI
-
+from APIs.RedisAPI.RedisTransactionAPI import RedisTransactionAPI
 
 db = RedisDB.RedisDB()
 messenger = RedisMessageAPI(db)
 orders = RedisOrderAPI(db)
-items = RedisItemAPI(db)
 games = RedisGameAPI(db)
 trades = RedisTradeAPI(db)
 achievements = RedisAchievementAPI(db)
+market = RedisTransactionAPI(db)
+items = RedisItemAPI(db, orders, market)
 users = RedisUserAPI(db, messenger, orders, items, games, trades)
 
 
@@ -33,6 +34,7 @@ genres = RedisGenreAPI(db)
 @app.route("/")
 def homepage():
     db.reset()
+    users.addUser("ADMIN", "PASSWORD")
     users.addUser("eli", "e")
     users.addUser("justin", "j")
     users.addBalance("eli", 20)
@@ -44,11 +46,12 @@ def homepage():
     users.buyGame("justin", "1")
     users.messageFriend("eli", "justin", "1v1 me on rust boi")
     users.messageFriend("justin", "eli", "but the CIA is watching me")
-    tradeID = users.makeTradeOffer("eli", "justin", ['1'], [])
-    print tradeID
-    return "ELI'S INVENTORY{} <br> ELI'S LIBRARY{}<br> JUSTIN'S INVENTORY{} <br> JUSTIN'S LIBRARY{}  <br> THEIR BALANCES NOW {} {}" .\
-        format(users.getInventory("eli"), users.getLibrary("eli"), users.getInventory("justin"), users.getLibrary("justin"),
-               users.getBalance("eli"), users.getTradeOffers("justin", "incoming"))
+    users.makeSellOrder("eli", "1", 15)
+    users.makeBuyOrder("justin", "1", 14.99)
+    orders = users.getOrders("justin", "buy")
+    users.cancelOrder("justin", orders[0])
+    print users.getBalance("justin")
+    return "hello world"
 
 
 

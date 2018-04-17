@@ -25,6 +25,9 @@ class RedisDB():
     def lpush(self, key, value):
         self.db.lpush(key, value)
 
+    def rpush(self, key, value):
+        self.db.rpush(key, value)
+
     def lmembers(self, key):
         return [x for x in self.db.lrange(key, 0, -1)]
 
@@ -48,3 +51,6 @@ class RedisDB():
     def srem(self, key, values):
         for value in values:
             self.db.srem(key, value)
+
+    def inSet(self, set, value):
+        return bool(int(self.db.sismember(set, value)))

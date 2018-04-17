@@ -37,9 +37,9 @@ class RedisTradeAPI(TradeAPI.TradeAPI):
     def getTradeInfo(self, tradeID):
         return {
             "from": self.db.get("trade:{}:userFrom".format(tradeID)),
-        "to": self.db.get("trade:{}:userTo".format(tradeID)),
-        "forItems": self.db.lmembers("trade:{}:forItems".format(tradeID)),
-        "offerItems": self.db.lmembers("trade:{}:offerItems".format(tradeID)),
+            "to": self.db.get("trade:{}:userTo".format(tradeID)),
+            "forItems": self.db.lmembers("trade:{}:forItems".format(tradeID)),
+            "offerItems": self.db.lmembers("trade:{}:offerItems".format(tradeID)),
             "completed": self.db.get("trade:{}:completed".format(tradeID))
         }
 

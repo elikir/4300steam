@@ -71,6 +71,16 @@ user:[userID]:trades:completed -> List([tradeID])
 ```
 user:[userID]:transactions -> List([transactionID])
 ```
+
+## A user's orders
+```
+user:[userID]:order:buy/sell -> List([orderID])
+```
+
+## A user's transcations
+```
+user:[userID]:transactions -> List([transactionID])
+```
 ---------
 
 ##Game
