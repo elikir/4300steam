@@ -1,5 +1,9 @@
-from flask import Flask
+from flask import Flask, session, request, redirect, url_for
+import flask_login
 app = Flask(__name__)
+app.secret_key = "JOHNRACHLIN"
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
 
 
 from APIs.RedisAPI.RedisUserAPI import RedisUserAPI
@@ -21,45 +25,43 @@ trades = RedisTradeAPI(db)
 achievements = RedisAchievementAPI(db)
 market = RedisTransactionAPI(db)
 items = RedisItemAPI(db, orders, market)
+genres = RedisGenreAPI(db)
 users = RedisUserAPI(db, messenger, orders, items, games, trades)
 
 
 
-
-
-
-genres = RedisGenreAPI(db)
-
-
 @app.route("/")
 def homepage():
-    db.reset()
-    users.addUser("ADMIN", "PASSWORD")
-    users.addUser("eli", "e")
-    users.addUser("justin", "j")
-    users.addBalance("eli", 20)
-    users.addBalance("justin", 19.98)
-    games.addGame("1", "Counter Strike: Global Offensive", "FPS", 19.99, "A first person shooter", [])
-    items.addItem("1", "AWP Dragon Lore", "1", "A 1 shot rifle boi", "")
-    users.addItem("eli", "1")
-    users.buyGame("eli", "1")
-    users.buyGame("justin", "1")
-    users.messageFriend("eli", "justin", "1v1 me on rust boi")
-    users.messageFriend("justin", "eli", "but the CIA is watching me")
-    users.makeSellOrder("eli", "1", 15)
-    users.makeBuyOrder("justin", "1", 14.99)
-    orders = users.getOrders("justin", "buy")
-    users.cancelOrder("justin", orders[0])
-    print users.getBalance("justin")
-    return "hello world"
+    return str(isLoggedIn())
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return '''
+               <form action='login' method='POST'>
+                <input type='text' name='username' id='username' placeholder='username'/>
+                <input type='password' name='password' id='password' placeholder='password'/>
+                <input type='submit' name='submit'/>
+               </form>
+               '''
+
+    username = request.form['username']
+    if users.validLogon(username, request.form['password']):
+        loginUser(username)
+        return "Logged in as " + username
+
+    return 'Bad login'
 
 
 
+def loginUser(username):
+    db.set("logged_in_user", username)
+    db.set("logged_in", 1)
 
+def logout():
+    db.delete("logged_in_user")
+    db.set("logged_in", 0)
 
-
-
-
-
-
-
+def isLoggedIn():
+    return bool(int(db.get("logged_in")))

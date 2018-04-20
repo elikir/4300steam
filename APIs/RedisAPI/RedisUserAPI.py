@@ -21,7 +21,7 @@ class RedisUserAPI(UserAPI.UserAPI):
     def addUser(self, userID, password):
         if self.db.inSet("steam:users", userID):
             return False
-        self.db.set(userID, password)
+        self.db.set("user:{}:password".format(userID), password)
         self.db.set("user:{}:balance".format(userID), 0)
         self.db.sadd("steam:users", userID)
         return True
@@ -74,7 +74,7 @@ class RedisUserAPI(UserAPI.UserAPI):
         self.db.lpush(key2, msg_uuid)
 
     def validLogon(self, userID, password):
-        return self.db.get(userID) == password
+        return self.db.get("user:{}:password".format(userID)) == password
 
     def getBalance(self, userID):
         key = "user:{}:balance".format(userID)
